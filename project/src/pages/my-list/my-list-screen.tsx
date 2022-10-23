@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import FilmCard from '../../components/film-card';
 import Footer from '../../components/footer';
 import Header from '../../components/header';
@@ -11,6 +12,9 @@ type MyListScreenProps = {
 export default function MyListScreen({myFilms}: MyListScreenProps): JSX.Element {
   return (
     <div className="user-page">
+      <Helmet>
+        <title>WTW: My Film List</title>
+      </Helmet>
       <Header headerClass='user-page__head'>
         <h1 className="page-title user-page__title">My list <span className="user-page__film-count">{myFilms.length}</span></h1>
         <UserBlock />
@@ -20,7 +24,7 @@ export default function MyListScreen({myFilms}: MyListScreenProps): JSX.Element 
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          { myFilms.map((film) => <FilmCard key={film.id} name={film.name} previewImage={film.previewImage} />) }
+          { myFilms.map((film) => <FilmCard key={`of-${film.id}`} id={film.id} name={film.name} previewImage={film.previewImage} />) }
         </div>
       </section>
 

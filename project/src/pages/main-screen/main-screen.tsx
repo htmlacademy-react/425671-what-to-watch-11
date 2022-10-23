@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import FilmCard from '../../components/film-card';
 import FilmPromo from '../../components/film-promo';
 import Footer from '../../components/footer';
@@ -12,6 +13,9 @@ type MainScreenProps = {
 export default function MainScreen({films, filmsCount, filmPromo}: MainScreenProps): JSX.Element {
   return (
     <>
+      <Helmet>
+        <title>WTW</title>
+      </Helmet>
       <FilmPromo {...filmPromo}/>
 
       <div className="page-content">
@@ -52,7 +56,7 @@ export default function MainScreen({films, filmsCount, filmPromo}: MainScreenPro
           </ul>
 
           <div className="catalog__films-list">
-            { films.slice(0, filmsCount).map((film) => <FilmCard key={film.id} name={film.name} previewImage={film.previewImage} />) }
+            { films.slice(0, filmsCount).map((film) => <FilmCard key={`mcf-${film.id}`} id={film.id} name={film.name} previewImage={film.previewImage} />) }
           </div>
 
           <div className="catalog__more">
