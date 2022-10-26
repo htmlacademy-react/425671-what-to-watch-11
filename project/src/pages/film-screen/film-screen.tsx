@@ -1,11 +1,14 @@
+import { Helmet } from 'react-helmet-async';
+import { Link, useParams } from 'react-router-dom';
 import FilmCard from '../../components/film-card';
 import Footer from '../../components/footer';
 import Header from '../../components/header';
 import UserBlock from '../../components/user-block';
 import { FilmType } from '../../types/film-type';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 type FilmScreenProps ={
-  film: FilmType;
+  films: FilmType[];
   moreFilms: FilmType[];
 }
 
@@ -26,10 +29,16 @@ const getRating = (value: number): string => {
   }
 };
 
-export default function FilmScreen({film, moreFilms}: FilmScreenProps): JSX.Element {
-  return (
+export default function FilmScreen({films, moreFilms}: FilmScreenProps): JSX.Element {
+  const urlParams = useParams();
+  const film:FilmType = films.find((item) => item.id === Number(urlParams.id)) as FilmType;
+
+  return film ? (
     <>
-      <section className="film-card film-card--full">
+      <Helmet>
+        <title>WTW: {film.name}</title>
+      </Helmet>
+      <section className="film-card film-card--full" style={{background: film.backgroundColor}}>
         <div className="film-card__hero">
           <div className="film-card__bg">
             <img src={film.posterImage} alt={film.name} />
@@ -63,7 +72,7 @@ export default function FilmScreen({film, moreFilms}: FilmScreenProps): JSX.Elem
                   <span>My list</span>
                   <span className="film-card__count">9</span>
                 </button>
-                <a href="add-review.html" className="btn film-card__button">Add review</a>
+                <Link to="review" className="btn film-card__button">Add review</Link>
               </div>
             </div>
           </div>
@@ -113,12 +122,12 @@ export default function FilmScreen({film, moreFilms}: FilmScreenProps): JSX.Elem
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            { moreFilms.map((oneFilm) => <FilmCard key={oneFilm.id} name={oneFilm.name} previewImage={oneFilm.previewImage} />) }
+            { moreFilms.map((oneFilm) => <FilmCard key={`of-${oneFilm.id}`} id={oneFilm.id} name={oneFilm.name} previewImage={oneFilm.previewImage} />) }
           </div>
         </section>
 
         <Footer />
       </div>
     </>
-  );
+  ) : <NotFoundScreen/>;
 }
