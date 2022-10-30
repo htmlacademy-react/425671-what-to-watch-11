@@ -7,10 +7,10 @@ import PlayerScreen from '../../pages/player/player-screen';
 import SignInScreen from '../../pages/sign-in-screen/sign-in-screen';
 import { FilmType } from '../../types/film-type';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
-import ScrollToTop from '../scroll-to-top';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import { AppRoute, AuthorizationStatus } from '../../сonst';
 import { HelmetProvider } from 'react-helmet-async';
-import PrivateRoute from '../private-route';
+import PrivateRoute from '../private-route/private-route';
 
 type AppProps = {
   films: FilmType[];

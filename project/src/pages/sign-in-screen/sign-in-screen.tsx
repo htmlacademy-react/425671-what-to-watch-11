@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
-import Footer from '../../components/footer';
-import Header from '../../components/header';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
 
 export default function SignInScreen(): JSX.Element {
   return (

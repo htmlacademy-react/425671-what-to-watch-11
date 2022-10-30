@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
-import FilmCard from '../../components/film-card';
-import FilmPromo from '../../components/film-promo';
-import Footer from '../../components/footer';
+import FilmCard from '../../components/film-card/film-card';
+import FilmPromo from '../../components/film-promo/film-promo';
+import Footer from '../../components/footer/footer';
 import { FilmType } from '../../types/film-type';
 
 type MainScreenProps = {

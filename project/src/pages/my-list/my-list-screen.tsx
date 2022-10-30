@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async';
-import FilmCard from '../../components/film-card';
-import Footer from '../../components/footer';
-import Header from '../../components/header';
-import UserBlock from '../../components/user-block';
+import FilmCard from '../../components/film-card/film-card';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
+import UserBlock from '../../components/user-block/user-block';
 import { FilmType } from '../../types/film-type';
 
 type MyListScreenProps = {
