@@ -56,7 +56,7 @@ export default function MainScreen({films, filmsCount, filmPromo}: MainScreenPro
           </ul>
 
           <div className="catalog__films-list">
-            { films.slice(0, filmsCount).map((film) => <FilmCard key={`mcf-${film.id}`} id={film.id} name={film.name} previewImage={film.previewImage} />) }
+            { films.map((film) => <FilmCard key={`mcf-${film.id}`} id={film.id} name={film.name} previewImage={film.previewImage} />) }
           </div>
 
           <div className="catalog__more">

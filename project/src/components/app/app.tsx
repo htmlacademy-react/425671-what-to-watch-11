@@ -24,7 +24,7 @@ function App({films, filmsCount, filmPromo}: AppProps): JSX.Element {
       <BrowserRouter>
         <ScrollToTop/>
         <Routes>
-          <Route path={AppRoute.Root} element={<MainScreen films={films} filmsCount={filmsCount} filmPromo={filmPromo}/>} />
+          <Route path={AppRoute.Root} element={<MainScreen films={films.slice(0, filmsCount)} filmsCount={filmsCount} filmPromo={filmPromo}/>} />
           <Route path={AppRoute.Login} element={<SignInScreen/>} />
           <Route path={AppRoute.MyList} element={
             <PrivateRoute authorizationStatus={AuthorizationStatus.Unknown}>
@@ -33,12 +33,13 @@ function App({films, filmsCount, filmPromo}: AppProps): JSX.Element {
           }
           />
           <Route path={AppRoute.Film} element={<FilmScreen films={films} moreFilms={films.slice(0,4)}/>} />
-          <Route path={AppRoute.AddReview} element={
+          {/* <Route path={AppRoute.AddReview} element={
             <PrivateRoute authorizationStatus={AuthorizationStatus.Unknown}>
               <Route path={AppRoute.AddReview} element={<AddReviewScreen films={films}/>} />
             </PrivateRoute>
           }
-          />
+          /> */}
+          <Route path={AppRoute.AddReview} element={<AddReviewScreen films={films}/>}/>
           <Route path={AppRoute.Player} element={<PlayerScreen/>} />
           <Route path="*" element={<NotFoundScreen/>}/>
         </Routes>

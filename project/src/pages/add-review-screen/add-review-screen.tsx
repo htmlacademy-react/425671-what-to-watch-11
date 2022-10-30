@@ -1,3 +1,4 @@
+import React, { SyntheticEvent } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Breadcrumbs from '../../components/breadcrumbs';
@@ -66,6 +67,29 @@ export default function AddReviewScreen({films}: AddReviewProps): JSX.Element {
   breadcrumbs.push({id: 1, title: film.name, ref: `/films/${film.id}/`});
   breadcrumbs.push({id: 2, title: 'Add review'});
 
+  const [formData, setFormData] = React.useState({
+    comment: '',
+    rating: 0,
+  });
+
+  const formChangeHandle = (evt: SyntheticEvent) => {
+    const target = evt.target as HTMLTextAreaElement | HTMLInputElement;
+
+    switch(true){
+      case target.name === 'review-text':
+        setFormData({...formData, comment: target.value});
+        break;
+
+      case target.name === 'rating':
+        setFormData({...formData, rating: parseInt(target.value, 10)});
+        break;
+
+      default:
+        setFormData({...formData});
+        break;
+    }
+  };
+
   return film ? (
     <section className="film-card film-card--full" style={{background: film.backgroundColor}}>
       <Helmet>
@@ -89,7 +113,7 @@ export default function AddReviewScreen({films}: AddReviewProps): JSX.Element {
       </div>
 
       <div className="add-review">
-        <form action="#" className="add-review__form">
+        <form action="#" className="add-review__form" onChange={formChangeHandle}>
           <div className="rating">
             <div className="rating__stars">
               <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
@@ -125,7 +149,7 @@ export default function AddReviewScreen({films}: AddReviewProps): JSX.Element {
           </div>
 
           <div className="add-review__text" style={{background: getLightColor(film.backgroundColor)}}>
-            <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text"></textarea>
+            <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={formData.comment}></textarea>
             <div className="add-review__submit">
               <button className="add-review__btn" type="submit">Post</button>
             </div>

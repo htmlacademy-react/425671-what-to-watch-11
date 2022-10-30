@@ -31,7 +31,7 @@ const getRating = (value: number): string => {
 
 export default function FilmScreen({films, moreFilms}: FilmScreenProps): JSX.Element {
   const urlParams = useParams();
-  const film:FilmType = films.find((item) => item.id === Number(urlParams.id)) as FilmType;
+  const film:FilmType|undefined = films.find((item) => item.id === Number(urlParams.id));
 
   return film ? (
     <>
