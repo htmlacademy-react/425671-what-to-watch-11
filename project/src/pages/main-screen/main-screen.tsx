@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import FilmCard from '../../components/film-card/film-card';
+import FilmList from '../../components/film-list/film-list';
 import FilmPromo from '../../components/film-promo/film-promo';
 import Footer from '../../components/footer/footer';
 import { FilmType } from '../../types/film-type';
@@ -55,9 +55,7 @@ export default function MainScreen({films, filmsCount, filmPromo}: MainScreenPro
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            { films.map((film) => <FilmCard key={`mcf-${film.id}`} id={film.id} name={film.name} previewImage={film.previewImage} />) }
-          </div>
+          <FilmList films={films} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>

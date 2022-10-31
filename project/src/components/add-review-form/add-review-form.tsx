@@ -10,7 +10,7 @@ export default function AddReviewForm({textfieldBackground}: AddReviewFormProps)
     rating: 0,
   });
 
-  const formChangeHandle = (evt: SyntheticEvent) => {
+  const handleFormChange = (evt: SyntheticEvent) => {
     const target = evt.target as HTMLTextAreaElement | HTMLInputElement;
 
     switch(true){
@@ -29,7 +29,7 @@ export default function AddReviewForm({textfieldBackground}: AddReviewFormProps)
   };
 
   return (
-    <form action="#" className="add-review__form" onChange={formChangeHandle}>
+    <form action="#" className="add-review__form" onChange={handleFormChange}>
       <div className="rating">
         <div className="rating__stars">
           <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
@@ -65,7 +65,7 @@ export default function AddReviewForm({textfieldBackground}: AddReviewFormProps)
       </div>
 
       <div className="add-review__text" style={{background: textfieldBackground}}>
-        <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={formData.comment}></textarea>
+        <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={formData.comment}/>
         <div className="add-review__submit">
           <button className="add-review__btn" type="submit">Post</button>
         </div>

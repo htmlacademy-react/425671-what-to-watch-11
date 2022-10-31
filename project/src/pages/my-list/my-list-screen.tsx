@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import FilmCard from '../../components/film-card/film-card';
+import FilmList from '../../components/film-list/film-list';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import UserBlock from '../../components/user-block/user-block';
@@ -23,9 +23,7 @@ export default function MyListScreen({myFilms}: MyListScreenProps): JSX.Element 
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <div className="catalog__films-list">
-          { myFilms.map((film) => <FilmCard key={`of-${film.id}`} id={film.id} name={film.name} previewImage={film.previewImage} />) }
-        </div>
+        <FilmList films={myFilms} />
       </section>
 
       <Footer />

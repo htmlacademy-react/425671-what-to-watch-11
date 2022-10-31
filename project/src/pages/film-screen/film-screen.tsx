@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
-import FilmCard from '../../components/film-card/film-card';
+import FilmList from '../../components/film-list/film-list';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import UserBlock from '../../components/user-block/user-block';
@@ -121,9 +121,8 @@ export default function FilmScreen({films, moreFilms}: FilmScreenProps): JSX.Ele
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <div className="catalog__films-list">
-            { moreFilms.map((oneFilm) => <FilmCard key={`of-${oneFilm.id}`} id={oneFilm.id} name={oneFilm.name} previewImage={oneFilm.previewImage} />) }
-          </div>
+          <FilmList films={moreFilms} />
+
         </section>
 
         <Footer />
