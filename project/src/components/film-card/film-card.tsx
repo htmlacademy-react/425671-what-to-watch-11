@@ -8,7 +8,7 @@ type FilmCardType = {
 
 export default function FilmCard({id, name, previewImage}: FilmCardType): JSX.Element {
   return (
-    <article className="small-film-card catalog__films-card">
+    <article className="small-film-card catalog__films-card" id={id.toString()}>
       <div className="small-film-card__image">
         <img src={previewImage} alt={name} width="280" height="175" />
       </div>

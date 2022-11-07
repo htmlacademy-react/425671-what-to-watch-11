@@ -1,5 +1,5 @@
-import Header from './header';
-import UserBlock from './user-block';
+import Header from '../header/header';
+import UserBlock from '../user-block/user-block';
 
 type FilmPromoType = {
   name: string;
