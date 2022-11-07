@@ -64,8 +64,10 @@ export default function AddReviewScreen({films}: AddReviewProps): JSX.Element {
   const film: FilmType | undefined = films.find((item) => item.id === Number(urlParams.id));
 
   const breadcrumbs: BreadcrumbsItem[] = [];
-  film && breadcrumbs.push({id: 1, title: film.name, ref: `/films/${film.id}/`});
-  film && breadcrumbs.push({id: 2, title: 'Add review'});
+  if(film){
+    breadcrumbs.push({id: 1, title: film.name, ref: `/films/${film.id}/`});
+    breadcrumbs.push({id: 2, title: 'Add review'});
+  }
 
   return film ? (
     <section className="film-card film-card--full" style={{background: film.backgroundColor}}>
