@@ -8,38 +8,19 @@ export type VideoPlayerPropsType = {
 }
 
 export default function VideoPlayer({filmSrc, filmPoster, muted, autoPlay }: VideoPlayerPropsType): JSX.Element {
-  const [, setIsLoading] = useState(true);
   const [isPlaying] = useState(autoPlay);
-
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    let isVideoPlayerMounted = true;
-
     if (videoRef.current === null) {
       return;
     }
 
-    videoRef.current.addEventListener('loadeddata', () => {
-      if (isVideoPlayerMounted) {
-        setIsLoading(false);
-      }
-    });
-
-    if (isPlaying) {
-      setTimeout(() => {
-        if (videoRef.current !== null) {
-          videoRef.current.play();
-        }
-      }, 1000);
-      return;
+    if(isPlaying){
+      videoRef.current.play();
+    } else {
+      videoRef.current.pause();
     }
-
-    videoRef.current.pause();
-
-    return () => {
-      isVideoPlayerMounted = false;
-    };
   }, [isPlaying]);
 
   return (
