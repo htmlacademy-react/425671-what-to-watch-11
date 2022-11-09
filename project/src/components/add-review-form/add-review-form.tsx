@@ -1,4 +1,5 @@
 import React from 'react';
+import { getLightColor } from '../../utils';
 
 type AddReviewFormProps = {
   textfieldBackground: string;
@@ -64,7 +65,7 @@ export default function AddReviewForm({textfieldBackground}: AddReviewFormProps)
         </div>
       </div>
 
-      <div className="add-review__text" style={{background: textfieldBackground}}>
+      <div className="add-review__text" style={{background: getLightColor(textfieldBackground)}}>
         <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={formData.comment}/>
         <div className="add-review__submit">
           <button className="add-review__btn" type="submit">Post</button>
