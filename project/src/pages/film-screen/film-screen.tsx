@@ -1,15 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
-import FilmList from '../../components/film-list/film-list';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
+import MoreLikeThis from '../../components/more-like-this/more-like-this';
 import UserBlock from '../../components/user-block/user-block';
 import { FilmType } from '../../types/film-type';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 type FilmScreenProps ={
   films: FilmType[];
-  moreFilms: FilmType[];
 }
 
 const getRating = (value: number): string => {
@@ -29,7 +28,7 @@ const getRating = (value: number): string => {
   }
 };
 
-export default function FilmScreen({films, moreFilms}: FilmScreenProps): JSX.Element {
+export default function FilmScreen({films}: FilmScreenProps): JSX.Element {
   const urlParams = useParams();
   const film:FilmType|undefined = films.find((item) => item.id === Number(urlParams.id));
 
@@ -121,7 +120,7 @@ export default function FilmScreen({films, moreFilms}: FilmScreenProps): JSX.Ele
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmList films={moreFilms} />
+          <MoreLikeThis films={films} currentFilmId={film.id} genre={film.genre} />
 
         </section>
 

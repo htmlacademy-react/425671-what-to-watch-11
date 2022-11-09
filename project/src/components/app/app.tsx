@@ -32,7 +32,7 @@ function App({films, filmsCount, filmPromo}: AppProps): JSX.Element {
             </PrivateRoute>
           }
           />
-          <Route path={AppRoute.Film} element={<FilmScreen films={films} moreFilms={films.slice(0,4)}/>} />
+          <Route path={AppRoute.Film} element={<FilmScreen films={films}/>} />
           {/* <Route path={AppRoute.AddReview} element={
             <PrivateRoute authorizationStatus={AuthorizationStatus.Unknown}>
               <Route path={AppRoute.AddReview} element={<AddReviewScreen films={films}/>} />
