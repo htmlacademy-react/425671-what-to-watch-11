@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 
 type AddReviewFormProps = {
   textfieldBackground: string;
@@ -10,7 +10,7 @@ export default function AddReviewForm({textfieldBackground}: AddReviewFormProps)
     rating: 0,
   });
 
-  const handleFormChange = (evt: SyntheticEvent) => {
+  const handleFormChange = (evt: React.FormEvent<HTMLFormElement>) => {
     const target = evt.target as HTMLTextAreaElement | HTMLInputElement;
 
     switch(true){
