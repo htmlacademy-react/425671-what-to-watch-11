@@ -22,7 +22,7 @@ export default function FilmList({films}: FilmListPropsType): JSX.Element {
 
   return (
     <div className="catalog__films-list" onMouseOver={handleMouseOver} onMouseOut={() => setActiveId(null)}>
-      { films.map((film) => <FilmCard key={`mcf-${film.id}`} id={film.id} name={film.name} previewImage={film.previewImage} previewSrc={film.previewVideoLink} isActive={film.id.toString() === activeId} />) }
+      { films.map((film) => <FilmCard key={`mcf-${film.id}`} id={film.id} name={film.name} previewImage={film.previewImage} previewVideoLink={film.previewVideoLink} isActive={film.id.toString() === activeId} />) }
     </div>
   );
 

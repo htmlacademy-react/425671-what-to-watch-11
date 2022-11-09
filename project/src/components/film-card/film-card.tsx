@@ -5,17 +5,17 @@ type FilmCardType = {
   id: number;
   name: string;
   isActive: boolean;
-  previewSrc: string;
+  previewVideoLink: string;
   previewImage: string;
 };
 
-export default function FilmCard({id, name, previewImage, previewSrc, isActive }: FilmCardType): JSX.Element {
+export default function FilmCard({id, name, previewImage, previewVideoLink, isActive }: FilmCardType): JSX.Element {
   return (
     <article className="small-film-card catalog__films-card" id={id.toString()}>
       <div className="small-film-card__image">
         {
           isActive ?
-            <VideoPlayer filmSrc={previewSrc} filmPoster={previewImage} muted autoPlay/> :
+            <VideoPlayer filmSrc={previewVideoLink} filmPoster={previewImage} muted autoPlay/> :
             <img src={previewImage} alt={name} width="280" height="175" />
         }
       </div>
