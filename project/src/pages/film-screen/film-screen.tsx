@@ -1,35 +1,18 @@
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
-import FilmList from '../../components/film-list/film-list';
+import FilmDescription from '../../components/film-description/film-description';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
+import MoreLikeThis from '../../components/more-like-this/more-like-this';
 import UserBlock from '../../components/user-block/user-block';
 import { FilmType } from '../../types/film-type';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 type FilmScreenProps ={
   films: FilmType[];
-  moreFilms: FilmType[];
 }
 
-const getRating = (value: number): string => {
-  switch (true) {
-    case value >= 0 && value < 3:
-      return 'Bad';
-    case value >= 3 && value < 5:
-      return 'Normal';
-    case value >= 5 && value < 8:
-      return 'Good';
-    case value >= 8 && value < 10:
-      return 'Very good';
-    case value === 10:
-      return 'Awesome';
-    default:
-      return 'No Rating';
-  }
-};
-
-export default function FilmScreen({films, moreFilms}: FilmScreenProps): JSX.Element {
+export default function FilmScreen({films}: FilmScreenProps): JSX.Element {
   const urlParams = useParams();
   const film:FilmType|undefined = films.find((item) => item.id === Number(urlParams.id));
 
@@ -84,35 +67,7 @@ export default function FilmScreen({films, moreFilms}: FilmScreenProps): JSX.Ele
               <img src={film.posterImage} alt={`${film.name} poster`} width="218" height="327" />
             </div>
 
-            <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="\#" className="film-nav__link">Overview</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="\#" className="film-nav__link">Details</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="\#" className="film-nav__link">Reviews</a>
-                  </li>
-                </ul>
-              </nav>
-
-              <div className="film-rating">
-                <div className="film-rating__score">{film.rating}</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">{getRating(film.rating)}</span>
-                  <span className="film-rating__count">240 ratings</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{film.description}</p>
-                <p className="film-card__director"><strong>{film.director}</strong></p>
-                <p className="film-card__starring"><strong>{film.starring.join(',')}</strong></p>
-              </div>
-            </div>
+            <FilmDescription film={film} />
           </div>
         </div>
       </section>
@@ -121,7 +76,7 @@ export default function FilmScreen({films, moreFilms}: FilmScreenProps): JSX.Ele
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmList films={moreFilms} />
+          <MoreLikeThis films={films} currentFilmId={film.id} genre={film.genre} />
 
         </section>
 
