@@ -5,16 +5,15 @@ import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import MoreLikeThis from '../../components/more-like-this/more-like-this';
 import UserBlock from '../../components/user-block/user-block';
+import { useAppSelector } from '../../hooks';
 import { FilmType } from '../../types/film-type';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
-type FilmScreenProps ={
-  films: FilmType[];
-}
 
-export default function FilmScreen({films}: FilmScreenProps): JSX.Element {
+export default function FilmScreen(): JSX.Element {
   const urlParams = useParams();
-  const film:FilmType|undefined = films.find((item) => item.id === Number(urlParams.id));
+  const films = useAppSelector((state) => state.films);
+  const film: FilmType | undefined = films.find((item) => item.id === Number(urlParams.id));
 
   return film ? (
     <>
@@ -24,7 +23,7 @@ export default function FilmScreen({films}: FilmScreenProps): JSX.Element {
       <section className="film-card film-card--full" style={{background: film.backgroundColor}}>
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={film.posterImage} alt={film.name} />
+            <img src={film.backgroundImage} alt={film.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>

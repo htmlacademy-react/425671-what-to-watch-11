@@ -4,18 +4,15 @@ import AddReviewForm from '../../components/add-review-form/add-review-form';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import Header from '../../components/header/header';
 import UserBlock from '../../components/user-block/user-block';
+import { useAppSelector } from '../../hooks';
 import { BreadcrumbsItem } from '../../types/breadcrumbs-item';
 import { FilmType } from '../../types/film-type';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
-type AddReviewProps = {
-  films: FilmType[];
-}
 
-
-export default function AddReviewScreen({films}: AddReviewProps): JSX.Element {
+export default function AddReviewScreen(): JSX.Element {
   const urlParams = useParams();
-  const film: FilmType | undefined = films.find((item) => item.id === Number(urlParams.id));
+  const film: FilmType | undefined = useAppSelector((state) => state.films.find((item) => item.id === Number(urlParams.id)));
 
   const breadcrumbs: BreadcrumbsItem[] = [];
   if(film){

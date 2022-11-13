@@ -1,4 +1,5 @@
 const MORE_LIKE_THIS_COUNT = 4;
+const DEFAULT_GENRE = 'All Genres';
 
 const enum AppRoute {
   Root = '/',
@@ -16,6 +17,7 @@ const enum AuthorizationStatus {
 
 export {
   MORE_LIKE_THIS_COUNT,
+  DEFAULT_GENRE,
   AppRoute,
   AuthorizationStatus
 };
