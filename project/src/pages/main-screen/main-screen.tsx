@@ -8,14 +8,13 @@ import { useAppSelector } from '../../hooks';
 
 export default function MainScreen(): JSX.Element {
   const films = useAppSelector((state) => state.films);
-  const filmPromo = films[15];
 
   return (
     <>
       <Helmet>
         <title>WTW</title>
       </Helmet>
-      <FilmPromo {...filmPromo}/>
+      <FilmPromo />
 
       <div className="page-content">
         <section className="catalog">

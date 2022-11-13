@@ -12,6 +12,7 @@ const makeGenres = () => {
 
 const initialState = {
   films: filmsMock,
+  filmPromo: filmsMock[15],
   genres: makeGenres(),
   currentGenre: DEFAULT_GENRE,
 };
