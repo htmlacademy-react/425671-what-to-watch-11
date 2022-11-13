@@ -3,13 +3,11 @@ import FilmList from '../../components/film-list/film-list';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import UserBlock from '../../components/user-block/user-block';
-import { FilmType } from '../../types/film-type';
+import { useAppSelector } from '../../hooks';
 
-type MyListScreenProps = {
-  myFilms: FilmType[];
-}
+export default function MyListScreen(): JSX.Element {
+  const myFilms = useAppSelector((state) => state.films); // TODO: Filter only added films
 
-export default function MyListScreen({myFilms}: MyListScreenProps): JSX.Element {
   return (
     <div className="user-page">
       <Helmet>

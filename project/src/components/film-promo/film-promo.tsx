@@ -1,15 +1,11 @@
+import { useAppSelector } from '../../hooks';
 import Header from '../header/header';
 import UserBlock from '../user-block/user-block';
 
-type FilmPromoType = {
-  name: string;
-  genre: string;
-  released: number;
-  backgroundImage: string;
-  posterImage: string;
-}
 
-export default function FilmPromo({name, genre, released, backgroundImage, posterImage}: FilmPromoType): JSX.Element {
+export default function FilmPromo(): JSX.Element {
+  const {name, genre, released, backgroundImage, posterImage} = useAppSelector((state) => state.filmPromo);
+
   return (
     <section className="film-card">
       <div className="film-card__bg">
