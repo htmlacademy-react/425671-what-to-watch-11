@@ -1,7 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {genreReset, genreSet} from './action';
+import {filmsOpenAdd, filmsOpenReset, genreReset, genreSet} from './action';
 import filmsMock from '../mock/films.json'; //temp films database
-import { DEFAULT_GENRE } from '../сonst';
+import { DEFAULT_GENRE, FILMS_PER_PAGE } from '../сonst';
 
 const makeGenres = () => {
   const genres = new Set<string>();
@@ -15,6 +15,7 @@ const initialState = {
   filmPromo: filmsMock[15],
   genres: makeGenres(),
   currentGenre: DEFAULT_GENRE,
+  filmsOpen: FILMS_PER_PAGE,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -26,6 +27,12 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(genreReset, (state) => {
       state.currentGenre = DEFAULT_GENRE;
       state.films = filmsMock;
+    })
+    .addCase(filmsOpenAdd, (state) => {
+      state.filmsOpen += FILMS_PER_PAGE;
+    })
+    .addCase(filmsOpenReset, (state) => {
+      state.filmsOpen = FILMS_PER_PAGE;
     });
 });
 
