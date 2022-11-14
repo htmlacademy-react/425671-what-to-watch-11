@@ -1,4 +1,5 @@
 const MORE_LIKE_THIS_COUNT = 4;
+const FILMS_PER_PAGE = 8;
 const DEFAULT_GENRE = 'All Genres';
 
 const enum AppRoute {
@@ -16,6 +17,7 @@ const enum AuthorizationStatus {
 }
 
 export {
+  FILMS_PER_PAGE,
   MORE_LIKE_THIS_COUNT,
   DEFAULT_GENRE,
   AppRoute,

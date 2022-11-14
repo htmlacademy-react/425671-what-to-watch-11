@@ -1,13 +1,18 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import FilmList from '../../components/film-list/film-list';
 import FilmPromo from '../../components/film-promo/film-promo';
 import Footer from '../../components/footer/footer';
 import GenresList from '../../components/genres-list/genres-list';
-import { useAppSelector } from '../../hooks';
+import ShowMoreButton from '../../components/show-more-button/show-more-button';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { filmsOpenReset } from '../../store/action';
 
 
 export default function MainScreen(): JSX.Element {
-  const films = useAppSelector((state) => state.films);
+  const [films, isShowMore] = useAppSelector((state) => [state.films.slice(0, state.filmsOpen), state.films.length > state.filmsOpen] );
+  const dispatch = useAppDispatch();
+  useEffect(() => () => { dispatch(filmsOpenReset()); }, [dispatch]);
 
   return (
     <>
@@ -24,9 +29,7 @@ export default function MainScreen(): JSX.Element {
 
           <FilmList films={films}/>
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          { isShowMore && <ShowMoreButton /> }
         </section>
 
         <Footer />
