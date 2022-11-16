@@ -5,7 +5,12 @@ import UserBlock from '../user-block/user-block';
 
 
 export default function FilmPromo(): JSX.Element {
-  const {name, genre, released, backgroundImage, posterImage} = useAppSelector((state) => state.filmPromo);
+  const promoFilm = useAppSelector((state) => state.promoFilm);
+  if(!promoFilm){
+    return (<div>{false}</div>);
+  }
+
+  const {name, genre, released, backgroundImage, posterImage} = promoFilm;
 
   return (
     <section className="film-card">

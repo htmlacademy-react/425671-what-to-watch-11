@@ -1440,3 +1440,31 @@ main {
   color: #fff;
   background: #fd612ead;
   border-radius: 15px; }
+
+.spinner {
+  width: 51px;
+  height: 51px;
+  background: #FFF;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  -webkit-animation: rotation 2s linear infinite;
+  animation: rotation 2s linear infinite;
+}
+
+.spinner:after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  color: #585858;
+  background: currentColor;
+  border-radius: 50%;
+  box-shadow: 15px 10px, -15px 10px, 9px 27px, -9px 27px;
+}
+@keyframes rotation {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg) }
+}
