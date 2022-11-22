@@ -1,6 +1,7 @@
 const MORE_LIKE_THIS_COUNT = 4;
 const FILMS_PER_PAGE = 8;
 const DEFAULT_GENRE = 'All Genres';
+const AUTH_TOKEN_KEY_NAME = 'guess-melody-token';
 
 const BACKEND_URL = 'https://11.react.pages.academy/wtw';
 const REQUEST_TIMEOUT = 5000;
@@ -16,12 +17,15 @@ const enum AppRoute {
 
 const enum AuthorizationStatus {
   Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
 
 enum APIRoute {
   Films = '/films',
   PromoFilm = '/promo',
+  Login = '/login',
+  Logout = '/logout',
 }
 
 export {
@@ -30,6 +34,7 @@ export {
   DEFAULT_GENRE,
   BACKEND_URL,
   REQUEST_TIMEOUT,
+  AUTH_TOKEN_KEY_NAME,
   AppRoute,
   APIRoute,
   AuthorizationStatus
