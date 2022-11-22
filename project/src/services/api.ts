@@ -1,7 +1,8 @@
-import axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import { BACKEND_URL, REQUEST_TIMEOUT } from '../сonst';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
+import { getToken } from './token';
 
 
 const StatusCodeMapping: Record<number, boolean> = {
@@ -17,6 +18,18 @@ export const createAPI = (): AxiosInstance => {
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMEOUT,
   });
+
+  api.interceptors.request.use(
+    (config: AxiosRequestConfig) => {
+      const token = getToken();
+
+      if (token && config.headers) {
+        config.headers['x-token'] = token;
+      }
+
+      return config;
+    },
+  );
 
   api.interceptors.response.use(
     (response) => response,

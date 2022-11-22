@@ -1,8 +1,9 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {filmsOpenAdd, filmsOpenReset, genreReset, genreSet, loadFilms, loadPromoFilm, setFilmsDataLoading, setPromoFilmDataLoading} from './action';
-import { DEFAULT_GENRE, FILMS_PER_PAGE } from '../сonst';
+import {filmsOpenAdd, filmsOpenReset, genreReset, genreSet, loadFilms, loadPromoFilm, requireAuthorization, resetAuthorizedUser, setAuthorizedUser, setFilmsDataLoading, setPromoFilmDataLoading} from './action';
+import { AuthorizationStatus, DEFAULT_GENRE, FILMS_PER_PAGE } from '../сonst';
 import { FilmType } from '../types/film-type';
 import { makeGenres } from '../utils';
+import { UserData } from '../types/user-data';
 
 
 type InitalState = {
@@ -14,6 +15,8 @@ type InitalState = {
   genres: string[];
   currentGenre: string;
   filmsOpen: number;
+  authorizationStatus: AuthorizationStatus;
+  authorizedUser: UserData | null;
 }
 
 const initialState: InitalState = {
@@ -25,6 +28,8 @@ const initialState: InitalState = {
   genres: [],
   currentGenre: DEFAULT_GENRE,
   filmsOpen: FILMS_PER_PAGE,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  authorizedUser: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -56,6 +61,15 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setPromoFilmDataLoading, (state, action) => {
       state.isPromoFilmDataLoading = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setAuthorizedUser, (state, action) => {
+      state.authorizedUser = action.payload;
+    })
+    .addCase(resetAuthorizedUser, (state) => {
+      state.authorizedUser = null;
     });
 });
 
