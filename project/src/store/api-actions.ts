@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { dropToken, saveToken } from '../services/token';
+import { dropToken, getToken, saveToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { FilmType } from '../types/film-type';
 import { AppDispatch, State } from '../types/state';
@@ -44,12 +44,14 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
 }>(
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
-    try {
-      const response = await api.get<UserData>(APIRoute.Login);
-      dispatch(setAuthorizedUser(response.data));
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    } catch {
-      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    if(getToken()) {
+      try {
+        const response = await api.get<UserData>(APIRoute.Login);
+        dispatch(setAuthorizedUser(response.data));
+        dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      } catch {
+        dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      }
     }
   },
 );
