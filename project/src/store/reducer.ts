@@ -1,15 +1,21 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {filmsOpenAdd, filmsOpenReset, genreReset, genreSet, loadFilms, loadPromoFilm, requireAuthorization, resetAuthorizedUser, setAuthorizedUser, setFilmsDataLoading, setPromoFilmDataLoading} from './action';
+import {filmsOpenAdd, filmsOpenReset, genreReset, genreSet, loadCurrentFilm, loadCurrentFilmComments, loadFilms, loadPromoFilm, loadSimilarFilms, requireAuthorization, resetAuthorizedUser, setAuthorizedUser, setCurrentFilmCommentsLoading, setFilmsDataLoading, setPromoFilmDataLoading, setSimilarFilmsLoading} from './action';
 import { AuthorizationStatus, DEFAULT_GENRE, FILMS_PER_PAGE } from '../сonst';
 import { FilmType } from '../types/film-type';
 import { makeGenres } from '../utils';
 import { UserData } from '../types/user-data';
+import { CommentType } from '../types/comment-type';
 
 
 type InitalState = {
   films: FilmType[];
   filmsOrigin: FilmType[];
+  currentFilm: FilmType | null;
+  currentFilmComments: CommentType[];
   isFilmsDataLoading: boolean;
+  isCurrentFilmCommentsLoading: boolean;
+  similarFilms: FilmType[];
+  isSimilarFilmsLoading: boolean;
   promoFilm: FilmType | null;
   isPromoFilmDataLoading: boolean;
   genres: string[];
@@ -22,7 +28,12 @@ type InitalState = {
 const initialState: InitalState = {
   films: [],
   filmsOrigin: [],
+  currentFilm: null,
+  currentFilmComments: [],
   isFilmsDataLoading: true,
+  isCurrentFilmCommentsLoading: true,
+  similarFilms: [],
+  isSimilarFilmsLoading: true,
   promoFilm: null,
   isPromoFilmDataLoading: true,
   genres: [],
@@ -53,8 +64,17 @@ const reducer = createReducer(initialState, (builder) => {
       state.filmsOrigin = action.payload;
       state.genres = makeGenres(action.payload);
     })
+    .addCase(loadCurrentFilm, (state, action) => {
+      state.currentFilm = action.payload;
+    })
     .addCase(setFilmsDataLoading, (state, action) => {
       state.isFilmsDataLoading = action.payload;
+    })
+    .addCase(loadSimilarFilms, (state, action) => {
+      state.similarFilms = action.payload;
+    })
+    .addCase(setSimilarFilmsLoading, (state, action) => {
+      state.isSimilarFilmsLoading = action.payload;
     })
     .addCase(loadPromoFilm, (state, action) => {
       state.promoFilm = action.payload;
@@ -70,6 +90,13 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(resetAuthorizedUser, (state) => {
       state.authorizedUser = null;
+    })
+
+    .addCase(loadCurrentFilmComments, (state, action) => {
+      state.currentFilmComments = action.payload;
+    })
+    .addCase(setCurrentFilmCommentsLoading, (state, action) => {
+      state.isCurrentFilmCommentsLoading = action.payload;
     });
 });
 

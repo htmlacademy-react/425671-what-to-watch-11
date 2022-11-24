@@ -1,20 +1,35 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import FilmButtons from '../../components/film-buttons/film-buttons';
 import FilmDescription from '../../components/film-description/film-description';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
+import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
 import MoreLikeThis from '../../components/more-like-this/more-like-this';
 import UserBlock from '../../components/user-block/user-block';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchCurrentFilmAction } from '../../store/api-actions';
 import { FilmType } from '../../types/film-type';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 
 export default function FilmScreen(): JSX.Element {
   const urlParams = useParams();
-  const films = useAppSelector((state) => state.films);
-  const film: FilmType | undefined = films.find((item) => item.id === Number(urlParams.id));
+  const dispatch = useAppDispatch();
+
+  const film: FilmType | null = useAppSelector((state) => state.currentFilm);
+  const isLoading: boolean = useAppSelector((state) => state.isFilmsDataLoading);
+
+  useEffect(() => {
+    if (urlParams.id && film?.id.toString() !== urlParams.id) {
+      dispatch(fetchCurrentFilmAction(urlParams.id));
+    }
+  }, [dispatch, film?.id, urlParams.id]);
+
+  if(isLoading && film?.id.toString() !== urlParams.id){
+    return <LoadingSpinner />;
+  }
 
   return film ? (
     <>
@@ -24,7 +39,7 @@ export default function FilmScreen(): JSX.Element {
       <section className="film-card film-card--full" style={{background: film.backgroundColor}}>
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={film.backgroundImage} alt={film.name} />
+            { isLoading ? '' : <img src={film.backgroundImage} alt={film.name} />}
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -48,11 +63,29 @@ export default function FilmScreen(): JSX.Element {
 
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
-            <div className="film-card__poster film-card__poster--big">
-              <img src={film.posterImage} alt={`${film.name} poster`} width="218" height="327" />
-            </div>
+            { isLoading ?
+              <div className="film-card__poster film-card__poster--big" style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+              >
+                <LoadingSpinner />
+              </div> :
+              <div className="film-card__poster film-card__poster--big">
+                <img src={film.posterImage} alt={`${film.name} poster`} width="218" height="327" />
+              </div> }
 
-            <FilmDescription film={film} />
+            { isLoading ?
+              <div style={{
+                flexGrow: '1',
+                alignSelf: 'center'
+              }}
+              >
+                <LoadingSpinner />
+              </div> :
+              <FilmDescription film={film} /> }
+
           </div>
         </div>
       </section>
@@ -61,7 +94,7 @@ export default function FilmScreen(): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <MoreLikeThis films={films} currentFilmId={film.id} genre={film.genre} />
+          <MoreLikeThis currentFilmId={film.id} />
 
         </section>
 

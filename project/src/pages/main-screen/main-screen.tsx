@@ -16,7 +16,6 @@ export default function MainScreen(): JSX.Element {
   const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
   const isPromoFilmsDataLoading = useAppSelector((state) => state.isPromoFilmDataLoading);
 
-
   const dispatch = useAppDispatch();
   useEffect(() => () => { dispatch(filmsOpenReset()); }, [dispatch]);
 
