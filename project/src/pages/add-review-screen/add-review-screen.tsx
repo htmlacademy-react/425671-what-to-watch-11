@@ -1,10 +1,13 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import AddReviewForm from '../../components/add-review-form/add-review-form';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import Header from '../../components/header/header';
+import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
 import UserBlock from '../../components/user-block/user-block';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchCurrentFilmAction } from '../../store/api-actions';
 import { BreadcrumbsItem } from '../../types/breadcrumbs-item';
 import { FilmType } from '../../types/film-type';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
@@ -12,7 +15,17 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 export default function AddReviewScreen(): JSX.Element {
   const urlParams = useParams();
-  const film: FilmType | undefined = useAppSelector((state) => state.films.find((item) => item.id === Number(urlParams.id)));
+  const dispatch = useAppDispatch();
+
+  const film: FilmType | null = useAppSelector((state) => state.currentFilm);
+  const isLoading: boolean = useAppSelector((state) => state.isFilmsDataLoading) || film?.id.toString() !== urlParams.id;
+
+  useEffect(() => {
+    if (urlParams.id && film?.id.toString() !== urlParams.id) {
+      dispatch(fetchCurrentFilmAction(urlParams.id));
+    }
+  }, [dispatch, film?.id, urlParams.id]);
+
 
   const breadcrumbs: BreadcrumbsItem[] = [];
   if(film){
@@ -27,7 +40,7 @@ export default function AddReviewScreen(): JSX.Element {
       </Helmet>
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={film.posterImage} alt={film.name} />
+          { isLoading ? '' : <img src={film.backgroundImage} alt={film.name} />}
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -37,13 +50,22 @@ export default function AddReviewScreen(): JSX.Element {
           <UserBlock />
         </Header>
 
-        <div className="film-card__poster film-card__poster--small">
-          <img src={film.posterImage} alt={film.name} />
-        </div>
+        { isLoading ?
+          <div className="film-card__poster film-card__poster--small" style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+          >
+            <LoadingSpinner />
+          </div> :
+          <div className="film-card__poster film-card__poster--small">
+            <img src={film.posterImage} alt={film.name} />
+          </div> }
       </div>
 
       <div className="add-review">
-        <AddReviewForm textfieldBackground={film.backgroundColor}/>
+        <AddReviewForm filmId={film.id} textfieldBackground={film.backgroundColor}/>
       </div>
 
     </section>

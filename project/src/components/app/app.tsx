@@ -28,7 +28,7 @@ function App(): JSX.Element {
             </PrivateRoute>
           }
           />
-          <Route path={AppRoute.Film} element={<FilmScreen />} />
+          <Route path={AppRoute.CurrentFilm} element={<FilmScreen />} />
           <Route path={AppRoute.AddReview} element={
             <PrivateRoute>
               <AddReviewScreen />

@@ -2,11 +2,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { dropToken, getToken, saveToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
+import { CommentType } from '../types/comment-type';
 import { FilmType } from '../types/film-type';
+import { NewCommentType } from '../types/new-comment';
 import { AppDispatch, State } from '../types/state';
 import { UserData } from '../types/user-data';
 import { APIRoute, AppRoute, AuthorizationStatus, SIMILAR_FILMS_COUNT } from '../сonst';
-import { loadCurrentFilm, loadFilms, loadPromoFilm, loadSimilarFilms, redirectToRoute, requireAuthorization, resetAuthorizedUser, setAuthorizedUser, setFilmsDataLoading, setPromoFilmDataLoading, setSimilarFilmsLoading } from './action';
+import { loadCurrentFilm, loadCurrentFilmComments, loadFilms, loadPromoFilm, loadSimilarFilms, redirectToRoute, requireAuthorization, resetAuthorizedUser, setAuthorizedUser, setCurrentFilmCommentsLoading, setFilmsDataLoading, setPromoFilmDataLoading, setSimilarFilmsLoading } from './action';
 
 
 export const fetchFilmsAction = createAsyncThunk<void, undefined, {
@@ -58,15 +60,33 @@ export const fetchSimilarFilmsAction = createAsyncThunk<void, number, {
 }>(
   'data/fetch/currentFilm',
   async (filmId, {dispatch, extra: api}) => {
-    dispatch(setSimilarFilmsLoading(true));
-    const similarFilms =
-      (await api.get<FilmType[]>(`${APIRoute.Films}/${filmId}${APIRoute.Similar}`))
-        .data
-        .filter((film) => film.id !== filmId)
-        .slice(0, SIMILAR_FILMS_COUNT);
+    try {
+      dispatch(setSimilarFilmsLoading(true));
+      const similarFilms =
+        (await api.get<FilmType[]>(`${APIRoute.Films}/${filmId}${APIRoute.Similar}`))
+          .data
+          .filter((film) => film.id !== filmId)
+          .slice(0, SIMILAR_FILMS_COUNT);
 
-    dispatch(setSimilarFilmsLoading(false));
-    dispatch(loadSimilarFilms(similarFilms));
+      dispatch(setSimilarFilmsLoading(false));
+      dispatch(loadSimilarFilms(similarFilms));
+    } catch (error) {
+      dispatch(setSimilarFilmsLoading(false));
+    }
+  }
+);
+
+export const fetchCurrentilmCommentsAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetch/currentFilm/comments',
+  async (filmId, {dispatch, extra: api}) => {
+    dispatch(setCurrentFilmCommentsLoading(true));
+    const {data} = await api.get<CommentType[]>(`${APIRoute.Comments}/${filmId}`);
+    dispatch(setCurrentFilmCommentsLoading(false));
+    dispatch(loadCurrentFilmComments(data));
   }
 );
 
@@ -116,4 +136,19 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     dispatch(resetAuthorizedUser());
   },
+);
+
+export const postCurrentFilmCommentAction = createAsyncThunk<void, {
+  formData: NewCommentType;
+  filmId: number;
+  }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/post/currentFilm/newComment',
+  async (formData, {dispatch, extra: api}) => {
+    await api.post<CommentType[]>(`${APIRoute.Comments}/${formData.filmId}`, formData.formData);
+    dispatch(redirectToRoute(`${AppRoute.Films}/${formData.filmId}`));
+  }
 );

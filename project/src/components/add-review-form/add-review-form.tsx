@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
+import { useAppDispatch } from '../../hooks';
+import { postCurrentFilmCommentAction } from '../../store/api-actions';
 import { getLightColor } from '../../utils';
+import { MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH } from '../../сonst';
 
 type AddReviewFormProps = {
+  filmId: number;
   textfieldBackground: string;
-}
+};
 
-export default function AddReviewForm({textfieldBackground}: AddReviewFormProps): JSX.Element {
+export default function AddReviewForm({filmId, textfieldBackground}: AddReviewFormProps): JSX.Element {
   const [formData, setFormData] = React.useState({
     comment: '',
     rating: 0,
+    isFormDisabled: false,
   });
+
+  const dispatch = useAppDispatch();
 
   const handleFormChange = (evt: React.FormEvent<HTMLFormElement>) => {
     const target = evt.target as HTMLTextAreaElement | HTMLInputElement;
@@ -29,46 +36,36 @@ export default function AddReviewForm({textfieldBackground}: AddReviewFormProps)
     }
   };
 
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    setFormData({...formData, isFormDisabled: true});
+    dispatch(postCurrentFilmCommentAction({formData: { comment: formData.comment, rating: formData.rating }, filmId: filmId}));
+  };
+
   return (
-    <form action="#" className="add-review__form" onChange={handleFormChange}>
+    <form action="#" className="add-review__form" onChange={handleFormChange} onSubmit={handleSubmit}>
       <div className="rating">
         <div className="rating__stars">
-          <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
-          <label className="rating__label" htmlFor="star-10">Rating 10</label>
-
-          <input className="rating__input" id="star-9" type="radio" name="rating" value="9" />
-          <label className="rating__label" htmlFor="star-9">Rating 9</label>
-
-          <input className="rating__input" id="star-8" type="radio" name="rating" value="8" defaultChecked />
-          <label className="rating__label" htmlFor="star-8">Rating 8</label>
-
-          <input className="rating__input" id="star-7" type="radio" name="rating" value="7" />
-          <label className="rating__label" htmlFor="star-7">Rating 7</label>
-
-          <input className="rating__input" id="star-6" type="radio" name="rating" value="6" />
-          <label className="rating__label" htmlFor="star-6">Rating 6</label>
-
-          <input className="rating__input" id="star-5" type="radio" name="rating" value="5" />
-          <label className="rating__label" htmlFor="star-5">Rating 5</label>
-
-          <input className="rating__input" id="star-4" type="radio" name="rating" value="4" />
-          <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-          <input className="rating__input" id="star-3" type="radio" name="rating" value="3" />
-          <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-          <input className="rating__input" id="star-2" type="radio" name="rating" value="2" />
-          <label className="rating__label" htmlFor="star-2">Rating 2</label>
-
-          <input className="rating__input" id="star-1" type="radio" name="rating" value="1" />
-          <label className="rating__label" htmlFor="star-1">Rating 1</label>
+          { Array.from({length: 10}, (_, i) => i + 1).reverse().map((star: number) => (
+            <React.Fragment key={`star-${star}`}>
+              <input className="rating__input" id={`star-${star}`} type="radio" name="rating" value={star} disabled={formData.isFormDisabled} />
+              <label className="rating__label" htmlFor={`star-${star}`}>Rating {star}</label>
+            </React.Fragment>
+          ))}
         </div>
       </div>
 
       <div className="add-review__text" style={{background: getLightColor(textfieldBackground)}}>
-        <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={formData.comment}/>
+        <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={formData.comment} disabled={formData.isFormDisabled} />
         <div className="add-review__submit">
-          <button className="add-review__btn" type="submit">Post</button>
+          <button
+            className="add-review__btn"
+            type="submit"
+            disabled={formData.isFormDisabled ||
+              !(formData.comment.length > MIN_COMMENT_LENGTH && formData.comment.length < MAX_COMMENT_LENGTH && formData.rating !== 0)}
+          >Post
+          </button>
         </div>
 
       </div>

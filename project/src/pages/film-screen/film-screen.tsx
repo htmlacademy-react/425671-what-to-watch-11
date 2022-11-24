@@ -19,13 +19,17 @@ export default function FilmScreen(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const film: FilmType | null = useAppSelector((state) => state.currentFilm);
-  const isLoading: boolean = useAppSelector((state) => state.isFilmsDataLoading) || film?.id.toString() !== urlParams.id;
+  const isLoading: boolean = useAppSelector((state) => state.isFilmsDataLoading);
 
   useEffect(() => {
     if (urlParams.id && film?.id.toString() !== urlParams.id) {
       dispatch(fetchCurrentFilmAction(urlParams.id));
     }
   }, [dispatch, film?.id, urlParams.id]);
+
+  if(isLoading && film?.id.toString() !== urlParams.id){
+    return <LoadingSpinner />;
+  }
 
   return film ? (
     <>
