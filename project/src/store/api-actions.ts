@@ -5,8 +5,8 @@ import { AuthData } from '../types/auth-data';
 import { FilmType } from '../types/film-type';
 import { AppDispatch, State } from '../types/state';
 import { UserData } from '../types/user-data';
-import { APIRoute, AppRoute, AuthorizationStatus } from '../сonst';
-import { loadFilms, loadPromoFilm, redirectToRoute, requireAuthorization, resetAuthorizedUser, setAuthorizedUser, setFilmsDataLoading, setPromoFilmDataLoading } from './action';
+import { APIRoute, AppRoute, AuthorizationStatus, SIMILAR_FILMS_COUNT } from '../сonst';
+import { loadCurrentFilm, loadFilms, loadPromoFilm, loadSimilarFilms, redirectToRoute, requireAuthorization, resetAuthorizedUser, setAuthorizedUser, setFilmsDataLoading, setPromoFilmDataLoading, setSimilarFilmsLoading } from './action';
 
 
 export const fetchFilmsAction = createAsyncThunk<void, undefined, {
@@ -23,6 +23,20 @@ export const fetchFilmsAction = createAsyncThunk<void, undefined, {
   },
 );
 
+export const fetchCurrentFilmAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetch/currentFilm',
+  async (filmId, {dispatch, extra: api}) => {
+    dispatch(setFilmsDataLoading(true));
+    const { data } = await api.get<FilmType>(`${APIRoute.Films}/${filmId}`);
+    dispatch(setFilmsDataLoading(false));
+    dispatch(loadCurrentFilm(data));
+  }
+);
+
 export const fetchPromoFilmAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
@@ -35,6 +49,25 @@ export const fetchPromoFilmAction = createAsyncThunk<void, undefined, {
     dispatch(setPromoFilmDataLoading(false));
     dispatch(loadPromoFilm(data));
   },
+);
+
+export const fetchSimilarFilmsAction = createAsyncThunk<void, number, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetch/currentFilm',
+  async (filmId, {dispatch, extra: api}) => {
+    dispatch(setSimilarFilmsLoading(true));
+    const similarFilms =
+      (await api.get<FilmType[]>(`${APIRoute.Films}/${filmId}${APIRoute.Similar}`))
+        .data
+        .filter((film) => film.id !== filmId)
+        .slice(0, SIMILAR_FILMS_COUNT);
+
+    dispatch(setSimilarFilmsLoading(false));
+    dispatch(loadSimilarFilms(similarFilms));
+  }
 );
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {

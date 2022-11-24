@@ -1,7 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
+import { AuthorizationStatus } from '../../сonst';
 
 export default function FilmButtons(): JSX.Element {
   const urlParams = useParams();
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   return (
     <div className="film-card__buttons">
@@ -18,7 +21,7 @@ export default function FilmButtons(): JSX.Element {
         <span>My list</span>
         <span className="film-card__count">9</span>
       </button>
-      { urlParams.id && <Link to="review" className="btn film-card__button">Add review</Link> }
+      { urlParams.id && authorizationStatus === AuthorizationStatus.Auth && <Link to="review" className="btn film-card__button">Add review</Link> }
     </div>
   );
 }

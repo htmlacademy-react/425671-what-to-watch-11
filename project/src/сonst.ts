@@ -1,4 +1,4 @@
-const MORE_LIKE_THIS_COUNT = 4;
+const SIMILAR_FILMS_COUNT = 4;
 const FILMS_PER_PAGE = 8;
 const DEFAULT_GENRE = 'All Genres';
 const AUTH_TOKEN_KEY_NAME = 'guess-melody-token';
@@ -24,13 +24,14 @@ const enum AuthorizationStatus {
 enum APIRoute {
   Films = '/films',
   PromoFilm = '/promo',
+  Similar = '/similar',
   Login = '/login',
   Logout = '/logout',
 }
 
 export {
   FILMS_PER_PAGE,
-  MORE_LIKE_THIS_COUNT,
+  SIMILAR_FILMS_COUNT,
   DEFAULT_GENRE,
   BACKEND_URL,
   REQUEST_TIMEOUT,

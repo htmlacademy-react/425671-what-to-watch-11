@@ -11,7 +11,11 @@ export const filmsOpenAdd = createAction('film/showMore/add');
 export const filmsOpenReset = createAction('film/showMore/reset');
 
 export const loadFilms = createAction<FilmType[]>('data/load/films');
+export const loadCurrentFilm = createAction<FilmType>('data/load/currentFilm');
 export const setFilmsDataLoading = createAction<boolean>('data/load/films/loadingStatus');
+
+export const loadSimilarFilms = createAction<FilmType[]>('data/load/similarFilms');
+export const setSimilarFilmsLoading = createAction<boolean>('data/load/similarFilms/loadingStatus');
 
 export const loadPromoFilm = createAction<FilmType>('data/load/promo');
 export const setPromoFilmDataLoading = createAction<boolean>('data/load/promo/loadingStatus');
