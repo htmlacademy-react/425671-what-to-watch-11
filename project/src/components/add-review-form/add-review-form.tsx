@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useMemo } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { postCurrentFilmCommentAction } from '../../store/api-actions';
 import { getLightColor } from '../../utils';
@@ -15,6 +15,8 @@ export default function AddReviewForm({filmId, textfieldBackground}: AddReviewFo
     rating: 0,
     isFormDisabled: false,
   });
+
+  const calculatedBackground = useMemo(() => getLightColor(textfieldBackground), [textfieldBackground]);
 
   const dispatch = useAppDispatch();
 
@@ -56,7 +58,7 @@ export default function AddReviewForm({filmId, textfieldBackground}: AddReviewFo
         </div>
       </div>
 
-      <div className="add-review__text" style={{background: getLightColor(textfieldBackground)}}>
+      <div className="add-review__text" style={{background: calculatedBackground}}>
         <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={formData.comment} disabled={formData.isFormDisabled} />
         <div className="add-review__submit">
           <button

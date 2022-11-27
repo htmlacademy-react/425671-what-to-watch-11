@@ -34,6 +34,10 @@ export default function AddReviewScreen(): JSX.Element {
     breadcrumbs.push({id: 2, title: 'Add review'});
   }
 
+  if(isLoading && film?.id.toString() !== urlParams.id){
+    return <LoadingSpinner />;
+  }
+
   return film ? (
     <section className="film-card film-card--full" style={{background: film.backgroundColor}}>
       <Helmet>
