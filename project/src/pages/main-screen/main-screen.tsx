@@ -8,13 +8,18 @@ import GenresList from '../../components/genres-list/genres-list';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
 import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { filmsOpenReset } from '../../store/action';
+import { filmsOpenReset } from '../../store/films/films';
+import { getFilmsOpened, getFilteredFilms, getIsFilmsLoading } from '../../store/films/selectors';
+import { getIsPromoFilmLoading } from '../../store/promo-film/selectors';
 
 
 export default function MainScreen(): JSX.Element {
-  const [films, isShowMore] = useAppSelector((state) => [state.films.slice(0, state.filmsOpen), state.films.length > state.filmsOpen] );
-  const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
-  const isPromoFilmsDataLoading = useAppSelector((state) => state.isPromoFilmDataLoading);
+  const films = useAppSelector(getFilteredFilms);
+  const filmsOpened = useAppSelector(getFilmsOpened);
+  const isShowMore = films.length > filmsOpened;
+
+  const isFilmsLoading = useAppSelector(getIsFilmsLoading);
+  const isPromoFilmLoading = useAppSelector(getIsPromoFilmLoading);
 
   const dispatch = useAppDispatch();
   useEffect(() => () => { dispatch(filmsOpenReset()); }, [dispatch]);
@@ -25,7 +30,7 @@ export default function MainScreen(): JSX.Element {
         <title>WTW</title>
       </Helmet>
 
-      { isPromoFilmsDataLoading ? <FilmPromoLoading /> : <FilmPromo /> }
+      { isPromoFilmLoading ? <FilmPromoLoading /> : <FilmPromo /> }
 
       <div className="page-content">
         <section className="catalog">
@@ -33,7 +38,7 @@ export default function MainScreen(): JSX.Element {
 
           <GenresList />
 
-          { isFilmsDataLoading ? <LoadingSpinner /> : <FilmList films={films}/> }
+          { isFilmsLoading ? <LoadingSpinner /> : <FilmList films={films.slice(0, filmsOpened)}/> }
 
           { isShowMore && <ShowMoreButton /> }
         </section>

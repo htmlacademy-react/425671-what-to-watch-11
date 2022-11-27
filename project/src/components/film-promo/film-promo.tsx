@@ -1,11 +1,12 @@
 import { useAppSelector } from '../../hooks';
+import { getPromoFilm } from '../../store/promo-film/selectors';
 import FilmButtons from '../film-buttons/film-buttons';
 import Header from '../header/header';
 import UserBlock from '../user-block/user-block';
 
 
 export default function FilmPromo(): JSX.Element {
-  const promoFilm = useAppSelector((state) => state.promoFilm);
+  const promoFilm = useAppSelector(getPromoFilm);
   if(!promoFilm){
     return (<div>{false}</div>);
   }

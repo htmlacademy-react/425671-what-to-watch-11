@@ -1,6 +1,3 @@
-import { FilmType } from './types/film-type';
-import { DEFAULT_GENRE } from './сonst';
-
 const getLightColor = (rgbHex: string): string => {
   let r = 0, g = 0, b = 0;
   if (rgbHex.length === 4) {
@@ -47,14 +44,6 @@ const getLightColor = (rgbHex: string): string => {
   return `hsl(${h},${s + 6}%,${l + 3}%)`;
 };
 
-const makeGenres = (films: FilmType[]) => {
-  const genres = new Set<string>();
-  genres.add(DEFAULT_GENRE);
-  films.forEach((film: FilmType) => genres.add(film.genre));
-  return [...genres].slice(0, 9);
-};
-
 export {
-  getLightColor,
-  makeGenres
+  getLightColor
 };

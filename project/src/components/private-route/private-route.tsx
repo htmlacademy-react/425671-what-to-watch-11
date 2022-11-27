@@ -1,5 +1,6 @@
 import {Navigate} from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user/selectors';
 import {AppRoute, AuthorizationStatus} from '../../сonst';
 import LoadingSpinner from '../loading-spinner/loading-spinner';
 
@@ -8,7 +9,7 @@ type PrivateRouteProps = {
 }
 
 export default function PrivateRoute(props: PrivateRouteProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const {children} = props;
 
   if(authorizationStatus === AuthorizationStatus.Unknown){

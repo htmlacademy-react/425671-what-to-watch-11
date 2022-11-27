@@ -1,126 +1,85 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { dropToken, getToken, saveToken } from '../services/token';
+import { dropToken, saveToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { CommentType } from '../types/comment-type';
 import { FilmType } from '../types/film-type';
 import { NewCommentType } from '../types/new-comment';
 import { AppDispatch, State } from '../types/state';
 import { UserData } from '../types/user-data';
-import { APIRoute, AppRoute, AuthorizationStatus, SIMILAR_FILMS_COUNT } from '../сonst';
-import { loadCurrentFilm, loadCurrentFilmComments, loadFilms, loadPromoFilm, loadSimilarFilms, redirectToRoute, requireAuthorization, resetAuthorizedUser, setAuthorizedUser, setCurrentFilmCommentsLoading, setFilmsDataLoading, setPromoFilmDataLoading, setSimilarFilmsLoading } from './action';
+import { APIRoute, AppRoute, SIMILAR_FILMS_COUNT } from '../сonst';
+import { redirectToRoute } from './action';
 
 
-export const fetchFilmsAction = createAsyncThunk<void, undefined, {
+export const fetchFilmsAction = createAsyncThunk<FilmType[], undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetch/films',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(setFilmsDataLoading(true));
-    const {data} = await api.get<FilmType[]>(APIRoute.Films);
-    dispatch(setFilmsDataLoading(false));
-    dispatch(loadFilms(data));
-  },
+  async (_arg, {dispatch, extra: api}) => (await api.get<FilmType[]>(APIRoute.Films)).data,
 );
 
-export const fetchCurrentFilmAction = createAsyncThunk<void, string, {
+export const fetchOneFilmAction = createAsyncThunk<FilmType, string, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetch/currentFilm',
-  async (filmId, {dispatch, extra: api}) => {
-    dispatch(setFilmsDataLoading(true));
-    const { data } = await api.get<FilmType>(`${APIRoute.Films}/${filmId}`);
-    dispatch(setFilmsDataLoading(false));
-    dispatch(loadCurrentFilm(data));
-  }
+  'data/fetch/oneFilm',
+  async (filmId, {dispatch, extra: api}) => (await api.get<FilmType>(`${APIRoute.Films}/${filmId}`)).data,
 );
 
-export const fetchPromoFilmAction = createAsyncThunk<void, undefined, {
+export const fetchPromoFilmAction = createAsyncThunk<FilmType, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetch/promo',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(setPromoFilmDataLoading(true));
-    const {data} = await api.get<FilmType>(APIRoute.PromoFilm);
-    dispatch(setPromoFilmDataLoading(false));
-    dispatch(loadPromoFilm(data));
-  },
+  async (_arg, {dispatch, extra: api}) => (await api.get<FilmType>(APIRoute.PromoFilm)).data,
 );
 
-export const fetchSimilarFilmsAction = createAsyncThunk<void, number, {
+export const fetchSimilarFilmsAction = createAsyncThunk<FilmType[], number, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetch/currentFilm',
-  async (filmId, {dispatch, extra: api}) => {
-    try {
-      dispatch(setSimilarFilmsLoading(true));
-      const similarFilms =
-        (await api.get<FilmType[]>(`${APIRoute.Films}/${filmId}${APIRoute.Similar}`))
-          .data
-          .filter((film) => film.id !== filmId)
-          .slice(0, SIMILAR_FILMS_COUNT);
-
-      dispatch(setSimilarFilmsLoading(false));
-      dispatch(loadSimilarFilms(similarFilms));
-    } catch (error) {
-      dispatch(setSimilarFilmsLoading(false));
-    }
-  }
+  async (filmId, {dispatch, extra: api}) =>
+    (await api.get<FilmType[]>(`${APIRoute.Films}/${filmId}${APIRoute.Similar}`))
+      .data
+      .filter((film) => film.id !== filmId)
+      .slice(0, SIMILAR_FILMS_COUNT),
 );
 
-export const fetchCurrentilmCommentsAction = createAsyncThunk<void, string, {
+export const fetchCommentsAction = createAsyncThunk<CommentType[], string, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetch/currentFilm/comments',
-  async (filmId, {dispatch, extra: api}) => {
-    dispatch(setCurrentFilmCommentsLoading(true));
-    const {data} = await api.get<CommentType[]>(`${APIRoute.Comments}/${filmId}`);
-    dispatch(setCurrentFilmCommentsLoading(false));
-    dispatch(loadCurrentFilmComments(data));
-  }
+  async (filmId, {dispatch, extra: api}) => (await api.get<CommentType[]>(`${APIRoute.Comments}/${filmId}`)).data,
 );
 
-export const checkAuthAction = createAsyncThunk<void, undefined, {
+export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
-  async (_arg, {dispatch, extra: api}) => {
-    if(getToken()) {
-      try {
-        const response = await api.get<UserData>(APIRoute.Login);
-        dispatch(setAuthorizedUser(response.data));
-        dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      } catch {
-        dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-      }
-    }
-  },
+  async (_arg, {dispatch, extra: api}) => (await api.get<UserData>(APIRoute.Login)).data,
 );
 
-export const loginAction = createAsyncThunk<void, AuthData, {
+export const loginAction = createAsyncThunk<UserData, AuthData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'user/login',
   async ({email, password}, {dispatch, extra: api}) => {
-    const response = await api.post<UserData>(APIRoute.Login, {email, password});
-    saveToken(response.data.token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(setAuthorizedUser(response.data));
+    const { data } = await api.post<UserData>(APIRoute.Login, {email, password});
+    saveToken(data.token);
     dispatch(redirectToRoute(AppRoute.Root));
+    return data;
   },
 );
 
@@ -133,8 +92,6 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-    dispatch(resetAuthorizedUser());
   },
 );
 

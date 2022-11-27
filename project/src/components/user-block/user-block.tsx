@@ -1,22 +1,23 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
-import { AppRoute, AuthorizationStatus } from '../../сonst';
+import { getAuthorizedUser, getIsAuthorized } from '../../store/user/selectors';
+import { AppRoute } from '../../сonst';
 
 export default function UserBlock(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const authorizedUser = useAppSelector((state) => state.authorizedUser);
+  const isAuthorized = useAppSelector(getIsAuthorized);
+  const authorizedUser = useAppSelector(getAuthorizedUser);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const getSigned = () => (
+  const getNotSigned = () => (
     <div className="user-block">
       <Link to={AppRoute.Login} className="user-block__link">Sign in</Link>
     </div>
   );
 
-  const getNotSigned = () => (
+  const getSigned = () => (
     <ul className="user-block">
       <li className="user-block__item">
         <div className="user-block__avatar" onClick={() => navigate(AppRoute.MyList)}>
@@ -37,6 +38,6 @@ export default function UserBlock(): JSX.Element {
     </ul>
   );
 
-  return authorizationStatus !== AuthorizationStatus.Auth ? getSigned() : getNotSigned();
+  return isAuthorized ? getSigned() : getNotSigned();
 }
 
