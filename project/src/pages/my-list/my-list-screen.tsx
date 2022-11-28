@@ -4,9 +4,10 @@ import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import UserBlock from '../../components/user-block/user-block';
 import { useAppSelector } from '../../hooks';
+import { getFilms } from '../../store/films/selectors';
 
 export default function MyListScreen(): JSX.Element {
-  const myFilms = useAppSelector((state) => state.films); // TODO: Filter only added films
+  const myFilms = useAppSelector(getFilms); // TODO: Filter only added films
 
   return (
     <div className="user-page">

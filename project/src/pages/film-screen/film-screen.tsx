@@ -9,7 +9,8 @@ import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
 import MoreLikeThis from '../../components/more-like-this/more-like-this';
 import UserBlock from '../../components/user-block/user-block';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchCurrentFilmAction } from '../../store/api-actions';
+import { fetchOneFilmAction } from '../../store/api-actions';
+import { getIsFilmLoading, getOneFilm } from '../../store/one-film/selectors';
 import { FilmType } from '../../types/film-type';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 
@@ -18,12 +19,12 @@ export default function FilmScreen(): JSX.Element {
   const urlParams = useParams();
   const dispatch = useAppDispatch();
 
-  const film: FilmType | null = useAppSelector((state) => state.currentFilm);
-  const isLoading: boolean = useAppSelector((state) => state.isFilmsDataLoading);
+  const film: FilmType | null = useAppSelector(getOneFilm);
+  const isLoading: boolean = useAppSelector(getIsFilmLoading);
 
   useEffect(() => {
     if (urlParams.id && film?.id.toString() !== urlParams.id) {
-      dispatch(fetchCurrentFilmAction(urlParams.id));
+      dispatch(fetchOneFilmAction(urlParams.id));
     }
   }, [dispatch, film?.id, urlParams.id]);
 

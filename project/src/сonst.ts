@@ -33,6 +33,15 @@ enum APIRoute {
   Logout = '/logout',
 }
 
+enum NameSpace {
+  SimilarFilms = 'SIMILARFILMS',
+  Comments = 'COMMENTS',
+  PromoFilm = 'PROMOFILM',
+  OneFilm = 'ONEFILM',
+  Films = 'FILMS',
+  User = 'USER',
+}
+
 export {
   FILMS_PER_PAGE,
   SIMILAR_FILMS_COUNT,
@@ -44,5 +53,6 @@ export {
   MAX_COMMENT_LENGTH,
   AppRoute,
   APIRoute,
-  AuthorizationStatus
+  AuthorizationStatus,
+  NameSpace
 };

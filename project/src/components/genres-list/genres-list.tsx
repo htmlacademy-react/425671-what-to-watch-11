@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { filmsOpenReset, genreReset, genreSet } from '../../store/action';
+import { filmsOpenReset, genreReset, genreSet } from '../../store/films/films';
+import { getCurrentGenre, getGenres } from '../../store/films/selectors';
 import { DEFAULT_GENRE } from '../../сonst';
 
 
 export default function GenresList(): JSX.Element {
-  const [genres,currentGenre] = useAppSelector((state) => [state.genres, state.currentGenre]);
+  const genres = useAppSelector(getGenres);
+  const currentGenre = useAppSelector(getCurrentGenre);
+
   const dispatch = useAppDispatch();
   useEffect(() => { dispatch(filmsOpenReset()); }, [dispatch, currentGenre]);
 

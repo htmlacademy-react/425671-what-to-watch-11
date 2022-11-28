@@ -12,9 +12,14 @@ import { HelmetProvider } from 'react-helmet-async';
 import PrivateRoute from '../private-route/private-route';
 import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
+import { store } from '../../store';
+import { fetchFilmsAction, fetchPromoFilmAction } from '../../store/api-actions';
 
 
 function App(): JSX.Element {
+  store.dispatch(fetchPromoFilmAction());
+  store.dispatch(fetchFilmsAction());
+
   return (
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>
