@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
-import { BACKEND_URL, REQUEST_TIMEOUT } from '../сonst';
+import { APIRoute, BACKEND_URL, REQUEST_TIMEOUT } from '../сonst';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-toastify';
 import { getToken } from './token';
@@ -11,7 +11,7 @@ const StatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.NOT_FOUND]: true
 };
 
-const shouldDisplayError = (response: AxiosResponse) => !!StatusCodeMapping[response.status];
+const shouldDisplayError = (response: AxiosResponse) => !!StatusCodeMapping[response.status] && !(response.config.url === APIRoute.Login && response.config.method === 'get');
 
 export const createAPI = (): AxiosInstance => {
   const api = axios.create({

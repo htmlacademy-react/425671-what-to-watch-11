@@ -19,3 +19,5 @@ export const getFilteredFilms = createSelector(
     return films.filter((film) => film.genre === genre);
   }
 );
+
+export const getFavoritesFilms = (state: State): number => state[NameSpace.Films].films.filter((film) => film.isFavorite === true).length;

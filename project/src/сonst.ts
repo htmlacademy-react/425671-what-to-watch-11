@@ -31,9 +31,11 @@ enum APIRoute {
   Comments = '/comments',
   Login = '/login',
   Logout = '/logout',
+  Favorites = '/favorite',
 }
 
 enum NameSpace {
+  FavoritesFilms = 'FAVORITESFILMS',
   SimilarFilms = 'SIMILARFILMS',
   Comments = 'COMMENTS',
   PromoFilm = 'PROMOFILM',

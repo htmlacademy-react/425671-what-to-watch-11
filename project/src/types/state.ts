@@ -39,3 +39,8 @@ export type SimilarFilmsState = {
   films: FilmType[];
   isLoading: boolean;
 };
+
+export type FavoritesState = {
+  films: FilmType[];
+  isLoading: boolean;
+};

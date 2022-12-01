@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FilmsState } from '../../types/state';
 import { DEFAULT_GENRE, FILMS_PER_PAGE, NameSpace } from '../../сonst';
-import { fetchFilmsAction } from '../api-actions';
+import { fetchFilmsAction, postFavoriteStatusAction } from '../api-actions';
 
 
 const initialState: FilmsState = {
@@ -39,6 +39,12 @@ export const films = createSlice({
       })
       .addCase(fetchFilmsAction.rejected, (state) => {
         state.isLoading = false;
+      })
+      .addCase(postFavoriteStatusAction.fulfilled, (state, action) => {
+        const filmIndex = state.films.findIndex((film) => film.id === action.payload.id);
+        if(filmIndex !== -1){
+          state.films[filmIndex].isFavorite = action.payload.isFavorite;
+        }
       });
   }
 });
