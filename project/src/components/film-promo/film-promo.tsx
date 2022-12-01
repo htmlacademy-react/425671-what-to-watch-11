@@ -11,7 +11,7 @@ export default function FilmPromo(): JSX.Element {
     return (<div>{false}</div>);
   }
 
-  const {name, genre, released, backgroundImage, posterImage} = promoFilm;
+  const {id, name, genre, released, backgroundImage, posterImage, isFavorite} = promoFilm;
 
   return (
     <section className="film-card">
@@ -38,7 +38,7 @@ export default function FilmPromo(): JSX.Element {
               <span className="film-card__year">{released}</span>
             </p>
 
-            <FilmButtons />
+            <FilmButtons filmId={id} isFavorite={isFavorite} promo />
           </div>
         </div>
       </div>

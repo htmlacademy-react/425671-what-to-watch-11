@@ -109,3 +109,21 @@ export const postCurrentFilmCommentAction = createAsyncThunk<void, {
     dispatch(redirectToRoute(`${AppRoute.Films}/${formData.filmId}`));
   }
 );
+
+export const fetchFavoritesAction = createAsyncThunk<FilmType[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetch/favorites',
+  async (_arg, {dispatch, extra: api}) => (await api.get<FilmType[]>(APIRoute.Favorites)).data,
+);
+
+export const postFavoriteStatusAction = createAsyncThunk<FilmType, { filmId: number; status: number }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/post/favorites/status',
+  async ({filmId, status}, { extra: api }) => (await api.post<FilmType>(`${APIRoute.Favorites}/${filmId}/${status}`)).data,
+);

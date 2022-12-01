@@ -1,5 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { NameSpace } from '../сonst';
+import { favorites } from './favorites/favorites';
 import { filmComments } from './film-comments/film-comments';
 import { films } from './films/films';
 import { oneFilm } from './one-film/one-film';
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   [NameSpace.PromoFilm]: promoFilm.reducer,
   [NameSpace.Comments]: filmComments.reducer,
   [NameSpace.SimilarFilms]: similarFilms.reducer,
+  [NameSpace.FavoritesFilms]: favorites.reducer,
 });
