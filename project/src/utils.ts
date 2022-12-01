@@ -1,4 +1,6 @@
-const getLightColor = (rgbHex: string): string => {
+import { VideoRef } from './types/video-ref-type';
+
+export const getLightColor = (rgbHex: string): string => {
   let r = 0, g = 0, b = 0;
   if (rgbHex.length === 4) {
     r = Number(`0x${rgbHex[1]}${rgbHex[1]}`);
@@ -44,6 +46,36 @@ const getLightColor = (rgbHex: string): string => {
   return `hsl(${h},${s + 6}%,${l + 3}%)`;
 };
 
-export {
-  getLightColor
+export const enterFullscreen = (element: HTMLElement | VideoRef | null): void => {
+  if (!element) {
+    return;
+  }
+
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  }
 };
+
+export const exitFullscreen = (): void => {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+};
+
+export const checkFullscreen = (): Element | null =>
+  document.fullscreenElement ||
+  document.mozFullScreenElement ||
+  document.webkitFullscreenElement ||
+  document.msFullscreenElement;
