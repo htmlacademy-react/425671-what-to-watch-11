@@ -43,7 +43,7 @@ export default function FilmButtons({filmId, isFavorite, promo}: FilmButtonsProp
           <use xlinkHref={`${isFavorite ? '#in-list' : '#add'}`}></use>
         </svg>
         <span>My list</span>
-        { isAuthorized && <span className="film-card__count">{favoritesCount}</span> }
+        { isAuthorized && (favoritesCount > 0) ? <span className="film-card__count">{favoritesCount}</span> : '' }
       </button>
 
       { !promo && isAuthorized && <Link to="review" className="btn film-card__button">Add review</Link> }
