@@ -1,7 +1,7 @@
 const SIMILAR_FILMS_COUNT = 4;
 const FILMS_PER_PAGE = 8;
 const DEFAULT_GENRE = 'All Genres';
-const AUTH_TOKEN_KEY_NAME = 'guess-melody-token';
+const AUTH_TOKEN_KEY_NAME = 'wtw-token';
 const MIN_COMMENT_LENGTH = 50;
 const MAX_COMMENT_LENGTH = 400;
 

@@ -1,4 +1,4 @@
-import { VideoRef } from './types/video-ref-type';
+import { VideoRef } from '../types/video-ref-type';
 
 export const getLightColor = (rgbHex: string): string => {
   let r = 0, g = 0, b = 0;

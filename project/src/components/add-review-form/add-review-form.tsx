@@ -1,7 +1,7 @@
 import React, { FormEvent, useMemo } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { postCurrentFilmCommentAction } from '../../store/api-actions';
-import { getLightColor } from '../../utils';
+import { getLightColor } from '../../utils/utils';
 import { MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH } from '../../сonst';
 
 type AddReviewFormProps = {

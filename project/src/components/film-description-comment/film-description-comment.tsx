@@ -1,5 +1,5 @@
 import { CommentType } from '../../types/comment-type';
-import { getLightColor } from '../../utils';
+import { getLightColor } from '../../utils/utils';
 
 type FilmDescriptionCommentProps = {
   comment: CommentType;
